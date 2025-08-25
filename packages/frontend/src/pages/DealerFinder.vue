@@ -245,7 +245,7 @@ export default defineComponent({
     },
     setup() {
         // --- Car brand autocomplete ---
-        const brands = ["Kia", "Opel"];
+        const brands = ["Kia", "Opel", "Seat"];
         const carBrand = ref(""); // confirmed brand
         const carBrandInput = ref(""); // what user types
         const filteredBrands = ref<string[]>([]);
@@ -312,7 +312,6 @@ export default defineComponent({
             }
 
             try {
-                // const res = await axios.get("http://localhost:3000/api/dealers", { params: query });
                 const [res] = await Promise.all([
                     axios.get("http://localhost:3000/api/dealers", { params: query }),
                     new Promise(resolve => setTimeout(resolve, 2000)) // 2s delay

@@ -44,14 +44,8 @@ async function handleOpelCookies(page: any) {
 
             attempt++;
         }
-
-        if (clicked) {
-            console.log("✅ Opel cookies declined successfully.");
-        } else {
-            console.warn("⚠️ Opel cookie refuse button not found after multiple attempts.");
-        }
-    } catch (err) {
-        console.error("❌ Error handling Opel cookies:", err);
+    } catch (error) {
+        console.error("Error handling Opel cookies:", error);
     }
 }
 
@@ -68,23 +62,20 @@ async function geocodePostalCode(postalCode: string): Promise<{ latitude: number
                 longitude: parseFloat(data[0].lon),
             };
         }
-    } catch (err) {
-        console.error("Geocoding error:", err);
+    } catch (error) {
+        console.error("Geocoding error:", error);
     }
     return null;
 }
 
 // Store to DB
 async function run(allDealers: any) {
-  try {
-    console.log("Scraped dealers:", allDealers.length);
-
-    // await saveDealers("opel", allDealers, "opelDealers");
-    await updateLastScrapeTime("opel");
-    console.log("All dealers saved to MongoDB");
-  } catch (err) {
-    console.error("Error:", err);
-  }
+    try {
+        // await saveDealers("opel", allDealers, "opelDealers");
+        await updateLastScrapeTime("opel");
+    } catch (error) {
+        console.error("Error:", error);
+    }
 }
 
 export async function scrapeOpel(city: string, page: Page): Promise<Dealer[]> {
@@ -122,15 +113,12 @@ export async function scrapeOpel(city: string, page: Page): Promise<Dealer[]> {
         await page.waitForSelector(firstSuggestionSelector, { visible: true });
         await page.click(firstSuggestionSelector);
 
-        console.log("✅ First autocomplete suggestion selected");
-
         // 6. Click the search button
         const searchBtnSelector = ".dealer-search-button.stat-search-submit";
         await page.waitForSelector(searchBtnSelector, { visible: true });
         await page.click(searchBtnSelector);
 
         // 7. Wait for 5 seconds
-        console.log("⏳ Waiting 5 seconds to load the results");
         await delay(5000);
 
         //8. Click "Mehr" until all dealers are loaded
@@ -146,7 +134,6 @@ export async function scrapeOpel(city: string, page: Page): Promise<Dealer[]> {
                 mehrVisible = false;
             }
         }
-        console.log("✅ All dealers loaded");
 
         // 9. Extract dealer cards
         await page.waitForSelector("li.q-dealer-info h5.q-dealer-name", { visible: true, timeout: 15000 });
@@ -227,10 +214,9 @@ export async function scrapeOpel(city: string, page: Page): Promise<Dealer[]> {
 
             allDealers.push(dealer);
         }
-        console.log("✅ Extracted dealers:", allDealers.length);
         await run(allDealers); //save dealers to DB //opelDealers
-    } catch (err) {
-        console.error("❌ Error in Seat scraper test:", err);
+    } catch (error) {
+        console.error("Error in Seat scraper test:", error);
     }
     return allDealers;
 }

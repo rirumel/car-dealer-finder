@@ -10,12 +10,12 @@ export interface Dealer {
     phone?: string | undefined;
     website?: string | undefined;
     services?: string[];
-    latitude?: number | undefined;  
+    latitude?: number | undefined;
     longitude?: number | undefined;
     location?: {
         type: "Point";
         coordinates: [number | undefined, number | undefined]; // [longitude, latitude]
-    }; 
+    };
 }
 
 function delay(ms: number) {
@@ -33,7 +33,6 @@ async function closePopupIfPresent(page: Page, timeout = 5000) {
             if (closeButton) {
                 await closeButton.evaluate(el => (el as HTMLElement).click());
                 await delay(500);
-                console.log("DEBUG: Closed initial popup");
                 return;
             }
         }
@@ -50,7 +49,6 @@ async function acceptCookiesIfPresent(page: Page, timeout = 5000) {
         if (cookieBtn) {
             await cookieBtn.evaluate(el => (el as HTMLElement).click());
             await delay(500);
-            console.log("DEBUG: Accepted cookies");
             return;
         }
         await delay(interval);
@@ -71,25 +69,22 @@ async function geocodePostalCode(postalCode: string, city: string): Promise<{ la
                 longitude: parseFloat(data[0].lon),
             };
         }
-    } catch (err) {
-        console.error("Geocoding error:", err);
+    } catch (error) {
+        console.error("Geocoding error:", error);
     }
     return null;
 }
 
 //save the dealers in the database
 async function run(allDealers: any) {
-  try {
-    console.log("Scraped dealers:", allDealers.length);
-
-    await saveDealers("kia", allDealers);
-    await updateLastScrapeTime("kia");
-    console.log("All dealers saved to MongoDB");
-    process.exit(0);
-  } catch (err) {
-    console.error("Error:", err);
-    process.exit(1);
-  }
+    try {
+        await saveDealers("kia", allDealers);
+        await updateLastScrapeTime("kia");
+        process.exit(0);
+    } catch (error) {
+        console.error("Error:", error);
+        process.exit(1);
+    }
 }
 
 export async function scrapeKIA(): Promise<Dealer[]> {
@@ -181,14 +176,13 @@ export async function scrapeKIA(): Promise<Dealer[]> {
             }
         }
 
-        console.log("DEBUG: Total dealers scraped:", allDealers.length);
         await browser.close();
         await run(allDealers);
         return allDealers;
 
-    } catch (err) {
+    } catch (error) {
         await browser.close();
-        throw err;
+        throw error;
     }
 }
 

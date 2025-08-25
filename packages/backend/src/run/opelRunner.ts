@@ -42,28 +42,23 @@ async function runAllCities() {
 
     try {
         for (const city of cities) {
-            console.log(`\n🌍 Scraping dealers for city: ${city}`);
             try {
                 const dealers: Dealer[] = await scrapeOpel(city, page);
 
                 if (dealers?.length) {
                     await saveDealers("opel", dealers, "opelDealers");
-                    console.log(`✅ ${dealers.length} dealers saved for ${city}`);
-                } else {
-                    console.log(`⚠️ No dealers found for ${city}`);
                 }
 
                 // Small delay between requests
                 await new Promise((res) => setTimeout(res, 3000));
             } catch (err) {
-                console.error(`❌ Error scraping ${city}:`, err);
+                console.error(`Error scraping ${city}:`, err);
             }
         }
 
         await updateLastScrapeTime("opel");
-        console.log("🎯 All cities processed successfully!");
     } catch (err) {
-        console.error("❌ Unexpected error during scraping:", err);
+        console.error("Unexpected error during scraping:", err);
     } finally {
         await browser.close();
         process.exit(0);

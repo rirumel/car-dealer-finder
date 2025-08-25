@@ -21,10 +21,7 @@ app.get("/api/dealers", async (req, res) => {
 
     if (postalCode) {
       const radiusNum = Number(radius) || 5;
-      console.log("Incoming query params:", req.query);
-      console.log("About to call geocodePostalCode with", postalCode);
       const coords = await geocodePostalCode(postalCode as string);
-      console.log("Geocode result:", coords);
       if (!coords) return res.status(404).json({ error: "Invalid postal code / city" });
 
       query.location = {
@@ -45,10 +42,7 @@ app.get("/api/dealers", async (req, res) => {
 });
 
 async function geocodePostalCode(postalCode: string) {
-  // const query = encodeURIComponent(`${postalCode} Germany`);
-  console.log("I am inside GeoCOdePostalCode.........");
   const url = `https://nominatim.openstreetmap.org/search?postalcode=${postalCode}&country=Germany&format=json&limit=1`;
-  console.log("JSON received using Postal Code and Germany", url);
 
   try {
     const response = await fetch(url, { headers: { "User-Agent": "CarDealersApp/1.0" } });
@@ -68,11 +62,8 @@ async function geocodePostalCode(postalCode: string) {
 async function startServer() {
   try {
     await client.connect();
-    console.log("Connected to MongoDB");
 
-    app.listen(3000, () => {
-      console.log("Server running on http://localhost:3000");
-    });
+    app.listen(3000, () => {});
   } catch (err) {
     console.error("Failed to start server:", err);
     process.exit(1);

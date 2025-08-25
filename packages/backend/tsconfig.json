@@ -11,7 +11,8 @@
     "rootDir": "./src",                          
     "sourceMap": true,                           
     "noUncheckedIndexedAccess": true,           
-    "exactOptionalPropertyTypes": true          
+    "exactOptionalPropertyTypes": true,
+    "allowImportingTsExtensions": true          
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

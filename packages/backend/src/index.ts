@@ -22,8 +22,10 @@ app.get("/api/dealers", async (req, res) => {
     let dealers;
     if(brand === 'Kia'){
       dealers = db.collection("dealers");
-    } else {
+    } else if (brand == 'Opel') {
       dealers = db.collection("opelDealers");
+    } else {
+      dealers = db.collection("seatDealers");
     }
 
     let query: any = {};
@@ -77,11 +79,8 @@ async function geocodePostalCode(postalCode: string) {
 async function startServer() {
   try {
     await client.connect();
-    console.log("Connected to MongoDB");
 
-    app.listen(3000, () => {
-      console.log("Server running on http://localhost:3000");
-    });
+    app.listen(3000, () => {});
   } catch (err) {
     console.error("Failed to start server:", err);
     process.exit(1);
@@ -89,20 +88,3 @@ async function startServer() {
 }
 
 startServer();
-
-// import cors from "cors";
-// import express from "express";
-
-// const app = express();
-// app.use(cors());
-// app.use(express.json());
-
-// const PORT = 3000;
-
-// app.get("/", (req, res) => {
-//   res.send("Backend is running!");
-// });
-
-// app.listen(PORT, () => {
-//   console.log(`Backend server running at http://localhost:${PORT}`);
-// });
