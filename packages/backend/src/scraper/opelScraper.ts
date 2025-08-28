@@ -1,6 +1,6 @@
 import puppeteer, { Page } from "puppeteer";
 import fetch from "node-fetch";
-import { updateLastScrapeTime } from "../services/db";
+import { updateLastScrapeTime } from "../services/db.ts";
 
 export interface Dealer {
     name?: string;
@@ -82,7 +82,7 @@ export async function scrapeOpel(city: string, page: Page): Promise<Dealer[]> {
     const allDealers: Dealer[] = [];
 
     try {
-        // 1. Visit SEAT dealer finder
+        // 1. Visit Opel dealer finder
         await page.goto("https://www.opel.de/tools/haendlersuche.html", {
             waitUntil: "networkidle2",
         });

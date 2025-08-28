@@ -1,5 +1,5 @@
-import { scrapeKIA } from "../scraper/kiaScraper";
-import { scrapeOpel } from "../scraper/opelScraper";
+import { scrapeKIA } from "../scraper/kiaScraper.ts";
+import { scrapeOpel } from "../scraper/opelScraper.ts";
 import puppeteer, { Browser, Page } from "puppeteer";
 
 async function test() {

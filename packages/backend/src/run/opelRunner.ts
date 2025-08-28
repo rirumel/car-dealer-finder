@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import puppeteer, { Browser, Page } from "puppeteer";
-import { scrapeOpel } from "../scraper/opelScraper";
-import { saveDealers, updateLastScrapeTime } from "../services/db";
+import { scrapeOpel } from "../scraper/opelScraper.ts";
+import { saveDealers, updateLastScrapeTime } from "../services/db.ts";
 
 export interface Dealer {
     name?: string;
@@ -26,9 +26,9 @@ async function runAllCities() {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
     // Load cities from JSON or array
-    const citiesPath = path.join(__dirname, "../assets/cities.json");
-    const cities: string[] = JSON.parse(fs.readFileSync(citiesPath, "utf-8"));
-    // const cities = ["Saarbrücken", "Berlin", "Hamburg"]; // Example for big run
+    // const citiesPath = path.join(__dirname, "../assets/cities.json");
+    // const cities: string[] = JSON.parse(fs.readFileSync(citiesPath, "utf-8"));
+    const cities = ["Saarbrücken", "Berlin"]; // Example run for Frank
 
     // Launch browser once
     const browser: Browser = await puppeteer.launch({
@@ -46,7 +46,7 @@ async function runAllCities() {
                 const dealers: Dealer[] = await scrapeOpel(city, page);
 
                 if (dealers?.length) {
-                    await saveDealers("opel", dealers, "opelDealers");
+                    await saveDealers("opel", dealers, "testDealersForFrank"); //a collection designed to test the scrapping from Opel for frank
                 }
 
                 // Small delay between requests

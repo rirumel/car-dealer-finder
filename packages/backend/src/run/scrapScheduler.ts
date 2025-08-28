@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { scrapeKIA } from "../scraper/kiaScraper";
+import { scrapeKIA } from "../scraper/kiaScraper.ts";
 
 // Prevent overlapping scrapes
 let isRunning = false;
@@ -20,6 +20,3 @@ cron.schedule("*/60 * * * *", async () => {
     isRunning = false;
   }
 });
-
-// Keep Node running
-setInterval(() => {}, 8000 * 60 * 60); // 8 hours interval, just to locally keep the process alive

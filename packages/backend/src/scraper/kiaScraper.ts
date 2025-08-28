@@ -1,5 +1,5 @@
 import puppeteer, { Page } from "puppeteer";
-import { saveDealers, updateLastScrapeTime } from "../services/db";
+import { saveDealers, updateLastScrapeTime } from "../services/db.ts";
 import fetch from "node-fetch";
 
 export interface Dealer {
@@ -78,7 +78,7 @@ async function geocodePostalCode(postalCode: string, city: string): Promise<{ la
 //save the dealers in the database
 async function run(allDealers: any) {
     try {
-        await saveDealers("kia", allDealers);
+        await saveDealers("kia", allDealers, "kiaDealers");
         await updateLastScrapeTime("kia");
         process.exit(0);
     } catch (error) {
@@ -185,4 +185,7 @@ export async function scrapeKIA(): Promise<Dealer[]> {
         throw error;
     }
 }
+
+//execute the scrapper
+scrapeKIA()
 
